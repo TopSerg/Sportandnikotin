@@ -18,6 +18,10 @@ captures/
 .externalNativeBuild/
 .cxx/
 
+# Downloaded MediaPipe models
+app/src/main/assets/*.task
+app/src/main/assets/*.download
+
 # APK / AAB
 *.apk
 *.aab
