@@ -36,8 +36,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -84,6 +84,7 @@ class MainActivity : ComponentActivity(), PoseLandmarkerHelper.Listener {
                     errorMessage = errorState.value,
                     onFrame = poseLandmarkerHelper::detectLiveStream,
                     onToggleRecording = ::toggleRecording,
+                    onCameraError = ::onError,
                     onClearError = { errorState.value = null },
                 )
             }
@@ -192,6 +193,7 @@ private fun TrackerScreen(
     errorMessage: String?,
     onFrame: (ImageProxy, Boolean) -> Unit,
     onToggleRecording: () -> Unit,
+    onCameraError: (String) -> Unit,
     onClearError: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -236,11 +238,7 @@ private fun TrackerScreen(
                         cameraExecutor = cameraExecutor,
                         lensFacing = lensFacing,
                         onFrame = onFrame,
-                        onError = { message ->
-                            if (message.isNotBlank()) {
-                                // The activity owns the persistent error state.
-                            }
-                        },
+                        onError = onCameraError,
                     )
                     PoseOverlay(
                         state = poseState,
