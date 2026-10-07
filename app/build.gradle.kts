@@ -79,7 +79,7 @@ val downloadPoseModel by tasks.registering {
         if (!outputFile.exists()) {
             outputFile.parentFile.mkdirs()
             val temporaryFile = outputFile.resolveSibling(outputFile.name + ".download")
-            project.uri(poseModelUrl).toURL().openStream().use { input ->
+            java.net.URI.create(poseModelUrl).toURL().openStream().use { input ->
                 temporaryFile.outputStream().use { output ->
                     input.copyTo(output)
                 }
